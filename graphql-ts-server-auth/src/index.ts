@@ -1,25 +1,27 @@
-//import { AppDataSource } from "./data-source"
+import { AppDataSource } from "./data-source"
 //import { User } from "./entity/User"
 import { createServer } from '@graphql-yoga/node'
+import { importSchema } from 'graphql-import'
+import { resolvers } from './resolvers'
+import { join } from 'path'
+
+const typeDefs = importSchema(join(__dirname,"schema.graphql"))
 
 // Provide your schemyarna
 const server = createServer({
     schema: {
-      typeDefs: `
-        type Query {
-          gg: String
-        }
-      `,
-      resolvers: {
-        Query: {
-          gg: () => 'Totally is the new good day',
-        },
-      },
+      typeDefs: typeDefs,
+      resolvers: resolvers
     },
   })
   
+  
+AppDataSource.initialize().then(() =>{
   // Start the server and explore http://localhost:4000/graphql
   server.start()
+})
+  
+
 
 /*
 AppDataSource.initialize().then(async () => {
