@@ -1,5 +1,4 @@
-import { AppDataSource } from "./data-source"
-//import { User } from "./entity/User"
+import { AppDataSource } from "./DBconfigs/data-source"
 import { createServer } from '@graphql-yoga/node'
 import { importSchema } from 'graphql-import'
 import { resolvers } from './resolvers'
@@ -14,8 +13,7 @@ const server = createServer({
       resolvers: resolvers
     },
   })
-  
-  
+
 AppDataSource.initialize().then(() =>{
   // Start the server and explore http://localhost:4000/graphql
   server.start()

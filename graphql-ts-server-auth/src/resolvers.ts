@@ -18,4 +18,4 @@ export const resolvers =  {
             return true
         }
     }
-  }
+}
