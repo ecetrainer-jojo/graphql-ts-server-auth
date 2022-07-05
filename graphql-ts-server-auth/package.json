@@ -19,6 +19,7 @@
       "@graphql-yoga/node": "^2.11.1",
       "@types/bcryptjs": "^2.4.2",
       "bcryptjs": "^2.4.3",
+      "dotenv": "^16.0.1",
       "graphql": "^16.5.0",
       "graphql-import": "^1.0.2",
       "graphql-request": "^4.3.0",
@@ -30,10 +31,10 @@
       "uuid": "^8.3.2"
    },
    "scripts": {
-      "start": "cd src &&  NODE_ENV=production nodemon --exec ts-node index.ts -e ts,graphql",
-      "test": "jest --config jest.config.ts",
+      "start": "cd src && NODE_ENV=production nodemon --exec ts-node index.ts -e ts,graphql",
+      "test": "NODE_ENV=test&&jest",
       "gen-schema-types": "gql2ts src/schema.graphql -o src/types/schema.d.ts",
-      "test-server": "cd src && NODE_ENV=test ts-node index.ts",
+      "test-server": "cd src && NODE_ENV=test nodemon --exec ts-node index.ts -e ts,graphql",
       "typeorm": "typeorm-ts-node-commonjs"
    }
 }

@@ -2,6 +2,17 @@ import * as bcrypt from 'bcryptjs'
 import { AppTestDataSource } from './DBconfigs/data-source-test'
 import { AppDataSource } from './DBconfigs/data-source'
 
+export const getAppDataSource = () => {
+    if(process.env.NODE_ENV === "test") {
+        console.log("Test DB has been fetched")
+        return AppTestDataSource
+    }
+    else {
+        console.log("Prod DB has been fetched")
+        return AppDataSource
+    }
+}
+
 export const initializeDB = async ()=>{
     await AppDataSource.initialize()
 }

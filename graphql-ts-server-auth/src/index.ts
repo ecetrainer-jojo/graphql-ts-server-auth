@@ -1,8 +1,9 @@
-import { AppDataSource } from "./DBconfigs/data-source"
 import { createServer } from '@graphql-yoga/node'
 import { importSchema } from 'graphql-import'
 import { resolvers } from './resolvers'
 import { join } from 'path'
+import { getAppDataSource } from "./databaseUtil"
+import 'dotenv/config';
 
 const typeDefs = importSchema(join(__dirname,"schema.graphql"))
 
@@ -14,11 +15,14 @@ const server = createServer({
     },
   })
 
-AppDataSource.initialize().then(() =>{
-  // Start the server and explore http://localhost:4000/graphql
-  server.start()
-})
-  
+export const startServer = ()=>{
+  getAppDataSource().initialize().then(() =>{
+    // Start the server and explore http://localhost:4000/graphql
+    server.start()
+  })
+}
+
+startServer()
 
 
 /*

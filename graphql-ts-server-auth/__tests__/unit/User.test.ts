@@ -1,11 +1,9 @@
 import {initializeTestDB, destroyTestDB, cleanTestDB } from '../../src/databaseUtil'
 import { User } from '../../src/entity/User';
-// Test Commands:
-//   - yarn test-server
-//     + Connect to test-server, which will drop schema after tests are finished.
-//   - yarn test:unit
-//     + Make the tests which are unittest.
-//   -> Yes, you need 2 terminals.
+import { request } from 'graphql-request'
+import { host } from '../../src/constants';
+
+
 beforeEach(async () => {
   await initializeTestDB()
   await cleanTestDB()
@@ -14,6 +12,7 @@ afterEach(async () => {
   await cleanTestDB()
   await destroyTestDB()
 });
+
 describe("user register/login tests", () => {
   it("User Registered", async () => {
     const newUser = User.create({
@@ -24,5 +23,21 @@ describe("user register/login tests", () => {
     const res = await User.find({})
     expect(res.length).toBe(1)
     expect(res[0]).toEqual(newUser)
+    console.log(process.env.NODE_ENV)
+    })
+
+  it("Integration test for creating a user", async () => {
+    const email =  "simpleMock@gmail.com"
+    const password = 'testtest'
+    const mutation = `
+    mutation{
+      register(email: "${email}", password: "${password}")
+    }`;
+    const response = await request(host,mutation)
+    expect(response).toEqual({register: true})
+    const res = await User.find({})
+    expect(res.length).toBe(1)
+    console.log(res[0])
+    expect(res[0].email).toEqual(email)
     })
 });
